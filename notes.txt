@@ -1,6 +1,5 @@
 # TODO
 
-- Deploy to Heroku
 - test with curl
 - AIs:
   AIs:
@@ -15,3 +14,5 @@
   Unequal (by 1) number of turns
   More than one person has won
   400 if not o’s turn
+
+- Add error logging
