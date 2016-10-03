@@ -17,7 +17,7 @@ class Board
   end
 
   def valid?
-    validate_size
+    validate_size && validate_characters
 
     return !errors.present?
   end
@@ -28,14 +28,23 @@ class Board
 
   private
 
+  def validate_characters
+    if !data.split("").all? { |c| c.in?(['o', 'x', ' ']) }
+      self.errors << "Board must only contain 'o', 'x', ' ' characters."
+      return false
+    end
+  end
+
   def validate_size
     if !data
       self.errors << "Board must be a non-empty string"
-      return
+      return false
     end
 
     if data.length != SIZE
       self.errors << "Board must be #{SIZE} characters long"
+      return false
     end
+    return true
   end
 end
