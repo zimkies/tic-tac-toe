@@ -1,5 +1,6 @@
 class PlayController < ApplicationController
   def show
+    # Ensure the board is valid
     board = Board.from_string(params[:board])
     if !board.valid?
       return render plain: board.errors.to_sentence, status: 400
@@ -10,6 +11,6 @@ class PlayController < ApplicationController
       return render plain: strategy.errors.to_sentence, status: 400
     end
     strategy.move
-    render inline: strategy.board.to_s
+    render inline: strategy.board.to_s.gsub(' ', '&nbsp;')
   end
 end
