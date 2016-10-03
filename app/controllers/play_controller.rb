@@ -11,6 +11,6 @@ class PlayController < ApplicationController
       return render plain: strategy.errors.to_sentence, status: 400
     end
     strategy.move
-    render inline: strategy.board.to_s.gsub(' ', '&nbsp;')
+    render inline: strategy.board.to_s
   end
 end
