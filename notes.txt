@@ -9,10 +9,10 @@
   Fully search space with caching AND randomizing moves.
 
 - Error check input on request
-  400 if board isn’t a valid tic-tac-toe board
-  9 positions
-  Unequal (by 1) number of turns
-  More than one person has won
-  400 if not o’s turn
+  x 400 if board isn’t a valid tic-tac-toe board
+  x 9 positions
+  x Unequal (by 1) number of turns
+  !!!! More than one person has won
+  x 400 if not o’s turn
 
 - Add error logging
