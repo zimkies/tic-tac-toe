@@ -26,6 +26,16 @@ class Board
     self.data
   end
 
+  def plausibly_os_turn?
+    x_count = data.split("").select { |c| c == 'x' }.count
+    o_count = data.split("").select { |c| c == 'o' }.count
+
+    (x_count - o_count).in? ([0, 1])
+  end
+
+  def game_over?
+  end
+
   private
 
   def validate_characters
