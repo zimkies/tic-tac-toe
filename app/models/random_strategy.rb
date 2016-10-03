@@ -6,10 +6,10 @@ class RandomStrategy
   end
 
   def move
-    self.board.data[0] = 'o'
+    board.data[0] = 'o'
   end
 
   def to_s
-    self.board
+    board
   end
 end
