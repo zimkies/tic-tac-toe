@@ -11,7 +11,6 @@ class Board
 
   # Creates a board from the string representation
   def self.from_string(string)
-    # TODO error check
     board = new(string)
     board
   end
@@ -34,6 +33,7 @@ class Board
   end
 
   def game_over?
+    data.split("").select { |c| c == ' ' }.count == 0
   end
 
   private

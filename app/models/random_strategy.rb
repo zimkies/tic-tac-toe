@@ -3,13 +3,14 @@ class RandomStrategy
 
   def initialize(board)
     self.board = board
+    self.errors = []
   end
 
   def valid?
     validate_game_not_over
     validate_os_turn
 
-    return errors.present?
+    return !errors.present?
   end
 
   # Find the first spot that hasn't been played and play it
