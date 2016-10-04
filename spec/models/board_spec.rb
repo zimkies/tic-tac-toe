@@ -1,6 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "Board", :type => :model do
+  let(:board) { Board.from_string string }
+  let(:string) { '         ' }
+
   describe ".from_string" do
     let(:string) { "         " }
 
@@ -32,6 +35,23 @@ RSpec.describe "Board", :type => :model do
       it "should be valid" do
         expect(board).to_not be_valid
       end
+    end
+  end
+
+  describe "get_winner" do
+    subject { board.get_winner }
+    let(:string) { '         ' }
+
+    it { should eq nil }
+
+    context "with o won by horizontal" do
+      let(:string) { '   ooo   ' }
+      it { should eq :o }
+    end
+
+    context "with x won" do
+      let(:string) { '   xxx   ' }
+      it { should eq :x }
     end
   end
 end

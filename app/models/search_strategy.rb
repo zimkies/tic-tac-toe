@@ -1,38 +1,60 @@
+# Play Strategy that does a DFS on all moves
+# Uses a cache to speed up significantly.
+# Also randomizes the move so we aren't playing the same game over and over
 class SearchStrategy < Strategy
-  # Do a DFS for a winning strategy
-  def move
-    index = get_best_move[0]
-    board[index] = 'o'
+  attr_accessor :cache
+
+  def initialize(board)
+    super
+    self.cache = {}
   end
 
-  # Return the index that should be played by this winner to win/tie
+  def move
+    index, winner = get_best_move(board.to_s)[0]
+    board.data[index] = :o.to_s
+  end
+
+  # Takes a string representing the board and a player
+  #
+  # Returns a pair [i, p]
+  #   i: the index of the string that the player should play
+  #   p: the predicted winner of the game if that move is made.
   def get_best_move(string, player=:o)
+    return cache[[string, player]] if cache[[string, player]]
+
     board = Board.from_string(string)
 
     if board.game_over?
-      return [nil, board.get_winner]
+      cache[[string, player]] = [nil, board.get_winner]
+      return cache[[string, player]]
     end
 
     # Look at open spots
-
-    # for each open spot, get if that spot is a win, tie or loss
-    # Return the first won that is a win, then tie, then loss
+    # for each open spot, see if playing that spot is a win, tie or loss
+    # Return any spot in the following order: win, tie, loss
     results = []
-    board.data.split("").each_with_index do |c, i|
+    board.split_data.each_with_index do |c, i|
       next unless c == ' '
 
-      board[i] = player.to_s
-      a = get_best_move(board.to_s, other_player(player))
-      results << [i, a]
+      board.data[i] = player.to_s
+      position, winner = get_best_move(board.to_s, other_player(player))
+      board.data[i] = ' '
+      results << [i, winner]
     end
 
-    win = results.find { |a| a[1] == player }
-    return win if win
+    # Return a random choice of win/tie/loss (in that order)
+    wins = results.select { |a| a[1] == player }
+    ties = results.select { |a| a[1] == nil }
+    move_winner_pair = if wins.present?
+      wins.sample
+    elsif ties.present?
+      ties.sample
+    else
+      results.sample
+    end
 
-    tie = results.find { |a| a[1] == nil }
-    return tie
-
-    return results.first
+    cache[[string, player]] = move_winner_pair
+    return move_winner_pair
   end
 
   def other_player(player)
