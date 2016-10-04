@@ -1,24 +1,19 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To setup:
 
-Things you may want to cover:
+```
+bundle install
+bundle exec rake db:setup
+```
 
-* Ruby version
+To test:
+```
+bundle exec rspec
+```
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# TODO
+- move board error validation into the search strategy logic
+- Add more strategy specs
+- Perhaps convert internal representation of board to use arrays of arrays.
+- Speed up DFS by permanently caching results somewhere

@@ -33,32 +33,54 @@ class Board
   end
 
   def game_over?
-    data.split("").select { |c| c == ' ' }.count == 0
+    board_full? || get_winner.present?
+  end
+
+  def board_full?
+    split_data.select { |c| c == ' ' }.count == 0
   end
 
   def get_winner
+    # TODO Add some shortcut logic to speed this up - check if at least 3
+    # plays have been made
+
     # Check rows
     (0..2).each do |r|
-      play = split_data[index_from_r_and_c(r, 0)]
-      (0..2).each do |c|
-        split_data[index_from_r_and_c(r, c)]
-      end
+      row = (0..2).map { |c| split_data[index_from_r_and_c(r, c)] }
+
+      # If all elements are the same and not empty
+      return row.first.to_sym if row.uniq.length == 1 && row.first != ' '
     end
 
     # Check columns
+    (0..2).each do |c|
+      columns = (0..2).map { |r| split_data[index_from_r_and_c(r, c)] }
 
-    # Check diagonals
+      # If all elements are the same and not empty
+      return columns.first.to_sym if columns.uniq.length == 1 && columns.first != ' '
+    end
+
+    # Check tl->br diagonal
+    diagonal = (0..2).map { |i| split_data[index_from_r_and_c(i, i)] }
+    return diagonal.first.to_sym if diagonal.uniq.length == 1 && diagonal.first != ' '
+
+    # Check bl->tr diagonal
+    diagonal = (0..2).map { |i| split_data[index_from_r_and_c(2 - i, i)] }
+    return diagonal.first.to_sym if diagonal.uniq.length == 1 && diagonal.first != ' '
+
+    # Otherwise nobody has won
+    return
   end
 
   def index_from_r_and_c(r, c)
     r * 3 + c
   end
 
-  private
-
   def split_data
     data.split("")
   end
+
+  private
 
   def validate_characters
     if !data.split("").all? { |c| c.in?(['o', 'x', ' ']) }
